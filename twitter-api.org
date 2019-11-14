@@ -1,0 +1,274 @@
+* NotATwitter API
+** /auth/login
+
+   Method: POST
+
+*** Body parameters
+
+    - username
+    - password
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "username":"username",
+       "token":"some jwt token"
+     }
+     #+END_SRC
+
+** /auth/session
+
+   Method: GET
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "username":"username"
+     }
+     #+END_SRC
+
+**** 401 Unauthenticated
+
+** /users/register
+
+   Method: POST
+
+*** Body params
+
+    - username
+    - password
+
+*** Response schema
+
+**** 201 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "username":"username"
+     }
+     #+END_SRC
+
+**** 422 Unprocessible entity
+
+     #+BEGIN_SRC json
+     {
+       "errors":[{"code":"someError","details":"Some details on the error"}]
+     }
+     #+END_SRC
+
+** /users/{id}
+
+   Method: GET
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "username":"username",
+       "avatar":"http(s)://some.path/to/the.image"
+     }
+     #+END_SRC
+
+**** 404 Not found
+
+** /users/{id}
+
+   Method: PATCH/PUT
+
+*** Json body params
+
+    #+BEGIN_SRC json
+    {
+      "usernmae":"New username"
+    }
+    #+END_SRC
+
+*** Multipart body params
+
+    - avatar -- avatar update
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "username":"username",
+       "avatar":"http(s)://some.path/to/the_new.image"
+     }
+     #+END_SRC
+
+**** 422 Unprocessible entity
+
+     #+BEGIN_SRC json
+     {
+       "errors":[{"code":"someError","details":"Some details"}]
+     }
+     #+END_SRC
+
+** /users/{id}/posts
+
+   Method: GET
+
+*** Response schema
+
+    #+BEGIN_SRC json
+    [
+      {
+        "id":0,
+        "userId":"userId"
+        "username":"username",
+        "createdAt":"1970-01-01T00:00:00Z",
+        "text":"Content of the post"
+      }
+    ]
+    #+END_SRC
+
+** /users/{id}/posts
+
+   Method: POST
+
+*** Body params
+
+    #+BEGIN_SRC json
+    {
+      "text":"Text of a new post"
+    }
+    #+END_SRC
+
+*** Response schema
+
+**** 201 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "userId":0,
+       "username":"username",
+       "createdAt":"1970-01-01T00:00:00Z",
+       "text":"Content of the post"
+     }
+     #+END_SRC
+
+**** 422 Unprocessible entity
+
+     #+BEGIN_SRC json
+     {
+       "errors":[{"code":"someError","details":"Some details"}]
+     }
+     #+END_SRC
+
+** /users/{id}/posts/{id}
+
+   *Method: PATCH/PUT*
+
+*** Body params
+
+    #+BEGIN_SRC json
+    {
+      "text":"New text"
+    }
+    #+END_SRC
+
+*** Response schema
+
+**** 200 OK
+
+     /Same as in show./
+
+**** 422 Unprocessible entity
+
+** /users/{id}/posts/{id}/reply
+
+   *Method: POST*
+
+*** Body params
+
+    #+BEGIN_SRC json
+    {
+      "text":"Reply text"
+    }
+    #+END_SRC
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     {
+       "id":0,
+       "userId":0,
+       "username":"username",
+       "avatar":"http(s)://...",
+       "createdAt":"ISO-8601 date string",
+       "text":"The reply text"
+     }
+     #+END_SRC
+
+** /users/{id}/posts/{id}/replies
+
+   *Method: GET*
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     [
+       {
+         "id":0,
+         "userId":0,
+         "username":"username",
+         "avatar":"http(s)://...",
+         "createdAt":"1970-01-01T00:00:00Z",
+         "text":"text"
+       }
+     ]
+     #+END_SRC
+
+**** 404 Not found
+
+** /users/{id}/follows
+
+   *Method: GET*
+
+*** Response schema
+
+**** 200 OK
+
+     #+BEGIN_SRC json
+     [
+       {
+         "id":0,
+         "username":"username",
+         "avatar":"http(s)://..."
+       }
+     ]
+     #+END_SRC
+
+** /users/{id}/follow
+
+   *Method: POST*
+
+*** Responses
+**** 200 OK
+
+** /users/{id}/unfollow
+
+   *Method: POST*
+
+*** Responses
+**** 200 OK
